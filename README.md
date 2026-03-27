@@ -40,27 +40,46 @@ Para poner en marcha el ecosistema completo en modo desarrollo:
 - Node.js (npm)
 - MySQL corriendo (XAMPP/Docker)
 
-### 2. Levantando los Servicios
-En consolas separadas (dentro de sus respectivas carpetas):
+### 2. Levantando los Servicios 🚀
+
+Puedes iniciar todo el ecosistema con un solo comando desde la raíz del proyecto (recomendado):
+
+```powershell
+# Desde PowerShell en la raíz del proyecto
+.\start-all.ps1
+```
+
+Si prefieres hacerlo manualmente en consolas separadas:
 
 **Orquestador (Backend):**
 ```powershell
+cd backend
 .\venv\Scripts\activate
 python main.py
 ```
 
-**Worker Node (Mac Pro):**
+**Worker Node (Simulador):**
 ```powershell
+cd worker_sim
 ..\backend\venv\Scripts\activate
 python main.py
 ```
 
 **Dashboard (Frontend):**
 ```powershell
+cd frontend
 npm run dev
 ```
 
 ---
+
+## 💻 Acceso desde otros dispositivos (Mac/iPad)
+
+Gracias a que los servicios están configurados para escuchar en `0.0.0.0`, puedes acceder al Dashboard desde cualquier dispositivo en tu red local:
+
+1. Encuentra la IP de tu PC (el script `start-all.ps1` te la mostrará).
+2. En tu Mac, abre el navegador y ve a: `http://TU_IP_LOCAL:5173`
+3. El sistema detectará automáticamente tu IP y se conectará al Backend sin configuraciones adicionales.
 
 ## 📈 Roadmap y Estado del Proyecto
 

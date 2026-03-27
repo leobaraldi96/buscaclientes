@@ -1,0 +1,159 @@
+:root {
+  --bg-color-main: #0a0c10;
+  --glass-bg: rgba(20, 25, 35, 0.6);
+  --glass-border: rgba(100, 110, 140, 0.15);
+  --neon-blue: #00f0ff;
+  --neon-green: #39ff14;
+  --neon-pink: #ff0055;
+  --text-primary: #e2e8f0;
+  --text-muted: #8b9bb4;
+  --font-main: 'Inter', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-color-main);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.08), transparent 25%);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Typography elements */
+h1 { font-family: var(--font-display); font-size: 2rem; }
+h1 span { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 240, 255, 0.3); }
+h2 { font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 1.5rem; letter-spacing: 0.5px; }
+
+.text-neon-green { color: var(--neon-green); text-shadow: 0 0 8px rgba(57, 255, 20, 0.4); }
+
+/* Glassmorphism Classes */
+.glass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Layout */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+/* Forms & Inputs */
+.input-group {
+  margin-bottom: 1.5rem;
+}
+.input-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.input-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: white;
+  font-family: var(--font-main);
+  transition: all 0.3s ease;
+}
+.input-group input:focus {
+  outline: none;
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+/* Buttons */
+.neon-btn {
+  width: 100%;
+  padding: 1rem;
+  background: transparent;
+  border: 1px solid var(--neon-blue);
+  border-radius: 8px;
+  color: var(--neon-blue);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.1) inset;
+}
+.neon-btn:hover {
+  background: var(--neon-blue);
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+}
+.neon-btn.secondary {
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+  box-shadow: 0 0 10px rgba(255, 0, 85, 0.1) inset;
+}
+.neon-btn.secondary:hover {
+  background: var(--neon-pink);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+}
+.mt-4 { margin-top: 1rem; }
+.hint { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }
+
+/* Dashboard Tables */
+.crm-header { display: flex; justify-content: space-between; align-items: center; }
+.badge { background: rgba(0, 240, 255, 0.1); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; }
+.table-container { width: 100%; overflow-x: auto; margin-top: 1rem; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+th { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+td { font-size: 0.95rem; }
+tr:hover { background: rgba(255,255,255,0.02); }
+
+/* Indicators & Animations */
+.status-indicator { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--neon-green); }
+.pulse { animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(57, 255, 20, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(57, 255, 20, 0); } }
+
+/* Tag States */
+.state-tag { font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 4px; text-transform: uppercase; font-weight: bold;}
+.state-nuevo { background: rgba(0, 240, 255, 0.1); color: var(--neon-blue); border: 1px solid var(--neon-blue); }
+.state-investigando { background: rgba(255, 204, 0, 0.1); color: #ffcc00; border: 1px solid #ffcc00; }
+.state-contactado { background: rgba(170, 0, 255, 0.1); color: #aa00ff; border: 1px solid #aa00ff; }

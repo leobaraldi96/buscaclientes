@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Busca Clientes - CRM Orquestador</title>
+    <link rel="stylesheet" href="./style.css">
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <header class="glass-header">
+            <div class="logo">
+                <h1>Busca<span>Clientes</span></h1>
+            </div>
+            <nav>
+                <div class="status-indicator">
+                    <span class="dot pulse"></span>
+                    Worker Node: <span class="text-neon-green">Esperando</span>
+                </div>
+            </nav>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- Sidebar for Controls -->
+            <aside class="glass-panel controls-panel">
+                <h2>Prospección Activa</h2>
+                <form id="prospectForm">
+                    <div class="input-group">
+                        <label for="empresa">Nombre Empresa</label>
+                        <input type="text" id="empresa" required placeholder="Ej: Farmacia Perez" />
+                    </div>
+                    <div class="input-group">
+                        <label for="url">URL Web</label>
+                        <input type="url" id="url" placeholder="https://..." />
+                    </div>
+                    <div class="input-group">
+                        <label for="contacto">Contacto Clave</label>
+                        <input type="text" id="contacto" placeholder="Nombre dueño" />
+                    </div>
+                    <button type="submit" class="neon-btn">Añadir Lead (Local)</button>
+                    <button type="button" class="neon-btn secondary mt-4" id="btnAutoStart">Iniciar Bot Autónomo</button>
+                    <div class="hint">Envía señal al Mac Pro</div>
+                </form>
+            </aside>
+
+            <!-- Main CRM Table -->
+            <section class="glass-panel crm-panel">
+                <div class="crm-header">
+                    <h2>CRM Leads</h2>
+                    <span class="badge" id="leadCount">0 leads</span>
+                </div>
+                <div class="table-container">
+                    <table id="leadsTable">
+                        <thead>
+                            <tr>
+                                <th>Empresa</th>
+                                <th>URL</th>
+                                <th>Contacto</th>
+                                <th>Insights</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadsBody">
+                            <!-- JS will populate leads here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

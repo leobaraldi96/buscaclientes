@@ -8,18 +8,25 @@ El sistema separa la **Gestión de Datos** de la **Ejecución de Tareas**.
 - **Responsabilidad:** Recibir peticiones del Dashboard, persistir prospectos en MySQL y delegar auditorías al Worker de forma asíncrona (`BackgroundTasks`).
 - **Base de Datos:** MySQL gestionada vía SQLAlchemy.
 
-### 2. Worker Node (Nodo Mac Pro / Python 8001)
-- **Tecnología:** FastAPI + Playwright.
-- **Responsabilidad:** Ejecutar una instancia de Chromium invisible, navegar la URL del lead, ejecutar JS, evadir protecciones perimetrales (WAF) y extraer texto plano/emails.
-- **Entrega de Resultados:** Devuelve un JSON estructurado al Orquestador al finalizar la tarea.
+### 2. Worker Node (Nodo Motor / Python 8001)
+- **Tecnología:** FastAPI + Playwright + BeautifulSoup + python-whois.
+- **Responsabilidad:** Ejecutar el motor de **Auditoría Profunda** en 4 fases:
+    1. **WHOIS:** Datos legales y de registro.
+    2. **Crawler:** Rastreo recursivo inteligente (timeout 90s).
+    3. **Extractor:** Enriquecimiento de datos comerciales (WhatsApp, Maps, Redes).
+    4. **Technical:** Análisis de UX/UI y Core Web Vitals vía Chromium.
+- **Entrega de Resultados:** Devuelve un reporte consolidado con "Puntos de Dolor" para el pitch de venta.
 
-### 3. Dashboard Interactivo (Vite 5173)
+### 3. Dashboard Ejecutivo (Vite 5173)
 - **Tecnología:** Vanilla JS + CSS Glassmorphism.
-- **Acceso Dinámico:** Detecta la IP del servidor automáticamente para permitir operación remota desde dispositivos móviles.
+- **Acceso Dinámico:** Detecta la IP del servidor automáticamente para permitir operación remota desde iPad/Mac.
+- **Seguimiento Realtime:** Polling cada 3s para visualizar el progreso del bot.
 
-## Flujo de Auditoría
-1. Usuario pulsa "AUDITAR" en el iPad.
-2. Dashboard manda POST al Orquestador (Windows).
-3. Orquestador cambia estado del lead a "investigando" y manda señal al Worker (Mac Pro).
-4. Worker navega, extrae datos y devuelve reporte.
-5. Orquestador actualiza SQL con emails y fallas, marcando al lead como "contactado" o "perdido".
+## Flujo de Auditoría Profunda
+1. El usuario pulsa "AUDITAR" o "RE-AUDITAR" en el lead seleccionado.
+2. El Orquestador cambia el estado a **INVESTIGANDO** y dispara la tarea en segundo plano.
+3. El Orquestador abre una conexión HTTP con el Worker (timeout de 180s).
+4. El Worker ejecuta las 4 fases de auditoría y genera el reporte.
+5. Si el Worker excede los 90s en el rastreo, corta esa fase para asegurar la entrega del reporte.
+6. El Orquestador recibe el reporte, actualiza MySQL y cambia el estado a **CONTACTADO**.
+7. El Dashboard detecta el cambio vía Polling y habilita el botón **INFORME**.

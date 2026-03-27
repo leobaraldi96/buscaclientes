@@ -225,3 +225,163 @@ tr:hover { background: rgba(255,255,255,0.02); }
   min-height: 120px;
 }
 .sales-box textarea:focus { outline: none; }
+
+/* FICHA DE EMPRESA */
+.ficha-empresa {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(0, 240, 255, 0.02));
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+.ficha-empresa h3 {
+  color: var(--neon-blue);
+  font-family: var(--font-display);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+.ficha-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.ficha-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.ficha-item.wide {
+  grid-column: 1 / -1;
+}
+.ficha-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.ficha-value {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.audit-meta {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.social-link {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.social-link.facebook { background: rgba(66, 103, 178, 0.2); color: #4267B2; border: 1px solid #4267B2; }
+.social-link.instagram { background: rgba(225, 48, 108, 0.2); color: #E1306C; border: 1px solid #E1306C; }
+.social-link.linkedin { background: rgba(0, 119, 181, 0.2); color: #0077B5; border: 1px solid #0077B5; }
+.social-link.twitter { background: rgba(29, 161, 242, 0.2); color: #1DA1F2; border: 1px solid #1DA1F2; }
+.social-link.youtube { background: rgba(255, 0, 0, 0.2); color: #FF0000; border: 1px solid #FF0000; }
+.social-link:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
+}
+
+/* TECH DETAILS */
+.tech-details {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+.tech-details h3 {
+  color: var(--neon-green);
+  font-family: var(--font-display);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.tech-section {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+}
+.tech-section.wide {
+  grid-column: 1 / -1;
+}
+.tech-section h4 {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+.tech-section ul {
+  list-style: none;
+  font-size: 0.9rem;
+}
+.tech-section li {
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+.tech-section li strong {
+  color: var(--neon-green);
+}
+.tech-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.tech-tag {
+  background: rgba(57, 255, 20, 0.1);
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+/* CONTACTS FOUND */
+.contacts-found {
+  background: rgba(170, 0, 255, 0.05);
+  border: 1px solid rgba(170, 0, 255, 0.3);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+.contacts-found h3 {
+  color: #aa00ff;
+  font-family: var(--font-display);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+.contact-list {
+  margin-bottom: 0.75rem;
+}
+.contact-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-right: 0.5rem;
+}
+.contact-item {
+  display: inline-block;
+  background: rgba(170, 0, 255, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.3rem;
+}

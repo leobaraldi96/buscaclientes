@@ -12,6 +12,8 @@ class ProspectoBase(BaseModel):
     falla_detectada: Optional[str] = None
     emails_hallados: Optional[str] = None
     auditoria_texto: Optional[str] = None
+    informe_detallado: Optional[dict] = None
+    puntos_de_dolor: Optional[str] = None
     estado: Optional[LeadStatus] = LeadStatus.nuevo
 
 class ProspectoCreate(ProspectoBase):
@@ -26,6 +28,8 @@ class ProspectoUpdate(BaseModel):
     falla_detectada: Optional[str] = None
     emails_hallados: Optional[str] = None
     auditoria_texto: Optional[str] = None
+    informe_detallado: Optional[dict] = None
+    puntos_de_dolor: Optional[str] = None
     estado: Optional[LeadStatus] = None
 
 class ProspectoOut(ProspectoBase):

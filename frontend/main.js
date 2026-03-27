@@ -14,10 +14,12 @@ async function fetchLeads() {
         const response = await fetch(API_BASE_URL + '/');
         if (!response.ok) throw new Error('Error listando prospectos');
         const leads = await response.json();
+        // Ordenar por fecha (más recientes primero)
+        leads.sort((a, b) => new Date(b.creado_en) - new Date(a.creado_en));
         renderLeads(leads);
     } catch (error) {
         console.error("No se pudo conectar al orquestador:", error);
-        leadsBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--neon-pink);">Error de conexión con el Backend. ¿Está encendido FastAPI?</td></tr>`;
+        leadsBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--neon-pink);">Error de conexión con el Backend. ¿Está encendido FastAPI?</td></tr>`;
     }
 }
 
@@ -27,7 +29,7 @@ function renderLeads(leads) {
     leadsBody.innerHTML = '';
     
     if(leads.length === 0) {
-        leadsBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Sin leads registrados. Empiece su prospección.</td></tr>`;
+        leadsBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Sin leads registrados. Empiece su prospección.</td></tr>`;
         return;
     }
 
@@ -35,23 +37,90 @@ function renderLeads(leads) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td><strong>${lead.empresa}</strong></td>
-            <td><a href="${lead.url || '#'}" target="_blank" style="color: var(--neon-blue); text-decoration: none;">${lead.url || 'N/A'}</a></td>
+            <td><a href="${lead.url || '#'}" target="_blank" style="color: var(--neon-blue); text-decoration: none;">${lead.url ? new URL(lead.url).hostname : 'N/A'}</a></td>
             <td>${lead.contacto_clave || 'Desconocido'}</td>
             <td>
                 <div style="font-size: 0.8rem; color: var(--text-muted); max-width: 250px;">
-                    <strong style="color: ${lead.falla_detectada && lead.falla_detectada.includes('Ninguna') ? 'var(--neon-green)' : 'var(--neon-pink)'};">${lead.falla_detectada || 'Pendiente'}</strong><br>
-                    ${lead.emails_hallados ? '<span style="color:#fff;">📧 ' + lead.emails_hallados + '</span>' : ''}
+                    <strong style="color: ${lead.falla_detectada && (lead.falla_detectada.includes('⚠️') || lead.falla_detectada.includes('📱') || lead.falla_detectada.includes('🐌')) ? 'var(--neon-pink)' : 'var(--neon-green)'};">${lead.falla_detectada || 'Pendiente'}</strong>
                 </div>
             </td>
             <td><span class="state-tag state-${lead.estado}">${lead.estado.toUpperCase()}</span></td>
             <td>
                 ${lead.estado === 'nuevo' && lead.url ? `<button onclick="iniciarAuditoria(${lead.id})" class="neon-btn secondary" style="padding: 4px 8px; font-size: 0.75rem; margin-right: 5px;">AUDITAR</button>` : ''}
-                <button onclick="deleteLead(${lead.id})" style="background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: 0.3s; font-size: 0.75rem;">ELIMINAR</button>
+                ${lead.estado === 'contactado' ? `<button onclick="openReport(${lead.id})" class="neon-btn" style="padding: 4px 8px; font-size: 0.75rem; margin-right: 5px; border-color: var(--neon-green); color: var(--neon-green);">INFORME</button>` : ''}
+                <button onclick="deleteLead(${lead.id})" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-muted); padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: 0.3s; font-size: 0.75rem;">X</button>
             </td>
         `;
         leadsBody.appendChild(tr);
     });
 }
+
+// LÓGICA DE MODAL E INFORME
+const reportModal = document.getElementById('reportModal');
+const modalBody = document.getElementById('modalBody');
+const modalTitle = document.getElementById('modalTitle');
+let currentLeadId = null;
+
+window.openReport = async (id) => {
+    currentLeadId = id;
+    try {
+        const response = await fetch(`${API_BASE_URL}/${id}`);
+        const lead = await response.json();
+        
+        modalTitle.textContent = `Auditoría: ${lead.empresa}`;
+        
+        const inf = lead.informe_detallado || { pilares: {} };
+        const pilares = inf.pilares || {};
+        
+        let pillarsHTML = '<div class="pillars-grid">';
+        for (const [key, data] of Object.entries(pilares)) {
+            pillarsHTML += `
+                <div class="pillar-card">
+                    <h3>${key}</h3>
+                    <span class="pillar-status status-${data.estado}">${data.estado.toUpperCase()}</span>
+                    <p class="pillar-desc">${data.detalle}</p>
+                </div>
+            `;
+        }
+        pillarsHTML += '</div>';
+
+        modalBody.innerHTML = `
+            ${pillarsHTML}
+            <div class="sales-box">
+                <h3>Resumen Estratégico de Venta (Puntos de Dolor)</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Edita este texto para personalizar tu propuesta comercial:</p>
+                <textarea id="salesPitchText">${lead.puntos_de_dolor || ""}</textarea>
+            </div>
+        `;
+        
+        reportModal.classList.add('active');
+    } catch (e) {
+        alert("Error cargando el informe.");
+    }
+};
+
+document.getElementById('closeModal').onclick = () => reportModal.classList.remove('active');
+
+document.getElementById('btnSaveReport').onclick = async () => {
+    const newPitch = document.getElementById('salesPitchText').value;
+    try {
+        const response = await fetch(`${API_BASE_URL}/${currentLeadId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ puntos_de_dolor: newPitch })
+        });
+        
+        if (response.ok) {
+            alert("Informe actualizado correctamente.");
+            reportModal.classList.remove('active');
+            fetchLeads();
+        }
+    } catch (e) {
+        alert("Error al guardar cambios.");
+    }
+};
+
+// ... Resto de funciones (iniciarAuditoria, deleteLead, etc.) ya existentes abajo
 
 // Formulario de creación
 prospectForm.addEventListener('submit', async (e) => {

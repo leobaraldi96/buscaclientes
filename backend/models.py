@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Enum, DateTime, Text
+from sqlalchemy import Column, Integer, String, Enum, DateTime, Text, JSON
 from sqlalchemy.sql import func
 import database
 import enum
@@ -23,6 +23,8 @@ class Prospecto(database.Base):
     falla_detectada = Column(String(255), nullable=True)
     emails_hallados = Column(String(500), nullable=True)
     auditoria_texto = Column(Text, nullable=True)
+    informe_detallado = Column(JSON, nullable=True)
+    puntos_de_dolor = Column(Text, nullable=True)
     estado = Column(Enum(LeadStatus), default=LeadStatus.nuevo)
     creado_en = Column(DateTime(timezone=True), server_default=func.now())
     actualizado_en = Column(DateTime(timezone=True), onupdate=func.now())

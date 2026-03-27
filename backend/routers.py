@@ -62,24 +62,30 @@ async def run_audit_in_background(prospecto_id: int, url: str):
         return
 
     try:
-        # Damos 60 segundos de timeout porque los navegadores reales consumen su tiempo cargando JS, imágenes y WAFs.
+        # Damos 60 segundos de timeout
         async with httpx.AsyncClient(timeout=60.0) as client:
             response = await client.post("http://localhost:8001/auditar", json={"url": db_prospecto.url})
-            result = response.json()
+            result = response.json() if response.status_code == 200 else {"status": "error", "falla_encontrada": "Worker error"}
     except Exception as e:
-        result = {"error": str(e)}
+        result = {"error": str(e), "status": "error"}
 
     # Actualizamos el prospecto en base al resultado del Worker
-    if db_prospecto: # Re-check in case it was deleted between fetch and update
+    if db_prospecto:
         if "status" in result and result["status"] == "success":
             db_prospecto.estado = models.LeadStatus.contactado
             db_prospecto.falla_detectada = result.get("falla_encontrada")
+            
+            # Nuevos Campos de Auditoría Profunda
+            db_prospecto.informe_detallado = result.get("informe_detallado")
+            db_prospecto.puntos_de_dolor = result.get("puntos_de_dolor")
+            
             emails = result.get("emails_encontrados", [])
             db_prospecto.emails_hallados = ", ".join(emails) if isinstance(emails, list) else str(emails)
             db_prospecto.auditoria_texto = result.get("text_preview")
         else:
             db_prospecto.estado = models.LeadStatus.perdido
             db_prospecto.falla_detectada = result.get("falla_encontrada", "Error de conexión")
+        
         db.commit()
     db.close()
 

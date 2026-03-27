@@ -157,3 +157,71 @@ tr:hover { background: rgba(255,255,255,0.02); }
 .state-nuevo { background: rgba(0, 240, 255, 0.1); color: var(--neon-blue); border: 1px solid var(--neon-blue); }
 .state-investigando { background: rgba(255, 204, 0, 0.1); color: #ffcc00; border: 1px solid #ffcc00; }
 .state-contactado { background: rgba(170, 0, 255, 0.1); color: #aa00ff; border: 1px solid #aa00ff; }
+
+/* MODAL STYLES */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+.modal-overlay.active { display: flex; }
+.modal-content {
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalEnter 0.4s ease-out;
+}
+@keyframes modalEnter { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+.close-btn { background: none; border: none; color: var(--text-muted); font-size: 2rem; cursor: pointer; }
+.close-btn:hover { color: var(--neon-pink); }
+
+/* REPORT PILLARS */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.pillar-card {
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--glass-border);
+}
+.pillar-card h3 { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+.pillar-status { font-weight: bold; margin-bottom: 0.5rem; display: block; }
+.status-critico { color: var(--neon-pink); }
+.status-alerta { color: #ffcc00; }
+.status-bueno { color: var(--neon-green); }
+.pillar-desc { font-size: 0.8rem; line-height: 1.4; color: var(--text-primary); }
+
+/* SALES PITCH BOX */
+.sales-box {
+  background: linear-gradient(135deg, rgba(255, 0, 85, 0.1), rgba(0, 240, 255, 0.05));
+  border: 1px solid var(--neon-pink);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+.sales-box h3 { color: var(--neon-pink); font-family: var(--font-display); margin-bottom: 0.75rem; }
+.sales-box textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 120px;
+}
+.sales-box textarea:focus { outline: none; }
